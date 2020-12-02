@@ -16,6 +16,8 @@ series = {ASPLOS '21}
 - Ubuntu 18.04
 - Docker 19.03
 - Python 3.5+
+- MXNet
+- XGBoost
 
 ## Code structure
 Similar to https://github.com/zyqCSL/sinan-gcp
