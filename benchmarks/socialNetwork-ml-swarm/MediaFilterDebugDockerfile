@@ -1,0 +1,66 @@
+# docker-keras - Keras in Docker with Python 2 and TensorFlow on CPU
+# FROM debian:stretch
+FROM ubuntu
+
+################## Install keras ######################
+
+# install debian packages
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update -qq \
+ && apt-get install --no-install-recommends -y \
+    # install essentials
+    build-essential \
+    g++ \
+    git \
+    openssh-client \
+    # install python 2
+    python \
+    python-dev \
+    python-pip \
+    python-setuptools \
+    python-virtualenv \
+    python-wheel \
+    pkg-config \
+    # requirements for numpy
+    libopenblas-base \
+    python-numpy \
+    python-scipy \
+    # requirements for keras
+    python-h5py \
+    python-yaml \
+    python-pydot \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# manually update numpy
+RUN pip --no-cache-dir install -U numpy==1.13.3
+
+ARG TENSORFLOW_VERSION=1.5.0
+ARG TENSORFLOW_DEVICE=cpu
+ARG TENSORFLOW_APPEND=
+RUN pip --no-cache-dir install https://storage.googleapis.com/tensorflow/linux/${TENSORFLOW_DEVICE}/tensorflow${TENSORFLOW_APPEND}-${TENSORFLOW_VERSION}-cp27-none-linux_x86_64.whl
+
+ARG KERAS_VERSION=2.2.4
+ENV KERAS_BACKEND=tensorflow
+RUN pip --no-cache-dir install --no-dependencies git+https://github.com/fchollet/keras.git@${KERAS_VERSION}
+
+RUN pip install keras_applications==1.0.4 --no-deps
+RUN pip install keras_preprocessing==1.0.2 --no-deps
+RUN pip install h5py==2.8.0
+RUN pip install pillow
+
+# quick test and dump package lists
+RUN python -c "import tensorflow; print(tensorflow.__version__)" \
+ && dpkg-query -l > /dpkg-query-l.txt \
+ && pip2 freeze > /pip2-freeze.txt
+
+################## Install thrift-py ########################
+
+#Add hello world script
+COPY ./ /social-network-microservices
+
+RUN pip install -r /social-network-microservices/requirements.txt
+
+WORKDIR   /social-network-microservices/src/MediaFilterService
+
+ENTRYPOINT ["sleep", "3h"]

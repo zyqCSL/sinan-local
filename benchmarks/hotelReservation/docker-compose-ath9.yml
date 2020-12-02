@@ -1,0 +1,109 @@
+version: "2.0"
+services:
+  search:
+    image: yz2297/hotel_reservation
+    entrypoint: search
+    ports:
+      - "8082:8082"
+    # depends_on:
+    #   - jaeger
+    #   - consul
+    volumes:
+      - ./config.json:/go/src/github.com/harlow/go-micro-services/config.json
+    restart: always
+    container_name: hotelreservation_search
+
+  memcached-rate:
+    image: memcached
+    ports:
+     - 11212:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=2048
+      - MEMCACHED_THREADS=8
+    restart: always
+    container_name: hotelreservation_memcached-rate
+
+  memcached-profile:
+    image: memcached
+    ports:
+     - 11213:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=2048
+      - MEMCACHED_THREADS=8
+    logging:
+      options:
+        max-size: 50m
+    restart: always
+    container_name: hotelreservation_memcached-profile
+
+  memcached-reserve:
+    image: memcached
+    ports:
+     - 11214:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=2048
+      - MEMCACHED_THREADS=8
+    restart: always
+    container_name: hotelreservation_memcached-reserve
+
+  mongodb-geo:
+    image: mongo
+    ports:
+      - "27018:27017" 
+    volumes:
+      - geo:/data/db 
+    restart: always
+    container_name: hotelreservation_mongodb-geo
+
+  mongodb-profile:
+    image: mongo
+    ports:
+      - "27019:27017"   
+    volumes:
+      - profile:/data/db 
+    restart: always
+    container_name: hotelreservation_mongodb-profile
+
+  mongodb-rate:
+    image: mongo
+    ports:
+      - "27020:27017"    
+    volumes:
+      - rate:/data/db
+    restart: always
+    container_name: hotelreservation_mongodb-rate
+
+  mongodb-recommendation:
+    image: mongo
+    ports:
+      - "27021:27017"    
+    volumes:
+      - recommendation:/data/db
+    restart: always
+    container_name: hotelreservation_mongodb-recommendation
+    
+  mongodb-reservation:
+    image: mongo
+    ports:
+      - "27022:27017"
+    volumes:
+      - reservation:/data/db 
+    restart: always
+    container_name: hotelreservation_mongodb-reservation
+
+  mongodb-user:
+    image: mongo
+    ports:
+      - "27023:27017"   
+    volumes:
+      - user:/data/db
+    restart: always
+    container_name: hotelreservation_mongodb-user
+
+volumes:
+  geo:
+  profile:
+  rate:
+  recommendation:
+  reservation:
+  user:

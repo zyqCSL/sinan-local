@@ -1,0 +1,152 @@
+version: "2"
+services:
+  # 0, 1, 2, 3 for network
+
+  # Resolving container hostnames from host machine
+  # CAUTION: could affect host machine networking
+#  dns-social-network:
+#    image: defreitas/dns-proxy-server
+#    volumes:
+#      - /opt/dns-proxy-server/conf:/app/conf
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/resolv.conf:/etc/resolv.conf
+
+  user-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-user-service
+    # hostname: user-service
+    ports:
+     - 10005:10005
+    restart: always
+    entrypoint: UserService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "4,6"
+
+  user-memcached:
+    image: memcached
+    # hostname: user-memcached
+    container_name: social-network-ath-user-memcached
+    ports:
+     - 11214:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=1024
+      - MEMCACHED_THREADS=2
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "8,10"
+
+  user-mongodb:
+    image: mongo
+    # hostname: user-mongodb
+    container_name: social-network-ath-user-mongodb
+    ports:
+     - 27023:27017
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "12,14"
+
+  media-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-media-service
+    # hostname: media-service
+    ports:
+     - 10006:10006
+    restart: always
+    entrypoint: MediaService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "16,18"
+    # network_mode: "host"
+
+# currently ignore media cache & storage
+#   media-memcached:
+#     image: memcached
+#     hostname: media-memcached
+# #    ports:
+# #      - 11215:11211
+#     restart: always
+
+#   media-mongodb:
+#     image: mongo
+#     hostname: media-mongodb
+# #    ports:
+# #      - 27024:27017
+#     restart: always
+
+  text-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-text-service
+    # hostname: text-service
+    ports:
+     - 10007:10007
+    restart: always
+    entrypoint: TextService
+    logging:
+      options:
+        max-size: 50m
+    depends_on:
+     - user-mention-service
+     - url-shorten-service
+    cpuset: "13,15"
+    # network_mode: "host"
+
+  unique-id-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-unique-id-service
+    # hostname: unique-id-service
+    ports:
+     - 10008:10008
+    restart: always
+    entrypoint: UniqueIdService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "5,7"
+    # network_mode: "host"
+
+  user-mention-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-user-mention-service
+    # hostname: user-mention-service
+    ports:
+     - 10009:10009
+    restart: always
+    entrypoint: UserMentionService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "9,11"
+    # network_mode: "host"
+
+  url-shorten-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    # hostname: url-shorten-service
+    container_name: social-network-ath-url-shorten-service
+    ports:
+     - 10004:10004
+    restart: always
+    entrypoint: UrlShortenService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "17,19"
+    # network_mode: "host"
+
+  # currelty ignore
+  # media-frontend:
+  #   image: yg397/media-frontend:xenial
+  #   hostname: media-frontend
+  #   ports:
+  #     - 8081:8080
+  #   restart: always
+  #   volumes:
+  #     - ./media-frontend/lua-scripts:/usr/local/openresty/nginx/lua-scripts
+  #     - ./media-frontend/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+

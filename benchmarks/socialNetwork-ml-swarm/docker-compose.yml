@@ -1,0 +1,345 @@
+version: "3"
+services:
+
+  # Resolving container hostnames from host machine
+  # CAUTION: could affect host machine networking
+#  dns-social-network:
+#    image: defreitas/dns-proxy-server
+#    volumes:
+#      - /opt/dns-proxy-server/conf:/app/conf
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/resolv.conf:/etc/resolv.conf
+
+  social-graph-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: social-graph-service
+    container_name: social-ml-social-graph-service
+#    ports:
+#      - 10000:9090
+    restart: always
+    entrypoint: SocialGraphService
+
+  social-graph-mongodb:
+    image: mongo
+    hostname: social-graph-mongodb
+    container_name: social-ml-social-graph-mongodb
+#    ports:
+#      - 27018:27017
+    restart: always
+
+  social-graph-redis:
+    image: redis
+    hostname: social-graph-redis
+    container_name: social-ml-social-graph-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+#    ports:
+#      - 6380:6379
+    restart: always
+
+  write-home-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: write-home-timeline-service
+    container_name: social-ml-write-home-timeline-service
+    restart: always
+    entrypoint: WriteHomeTimelineService
+    depends_on:
+      - write-home-timeline-rabbitmq
+      - home-timeline-redis
+      - social-graph-service
+
+  write-home-timeline-rabbitmq:
+    image: rabbitmq
+    hostname: write-home-timeline-rabbitmq
+    container_name: social-ml-write-home-timeline-rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WRITE-HOME-TIMELINE-RABBITMQ"
+      RABBITMQ_DEFAULT_VHOST: "/"
+#    ports:
+#      - 15672:15672
+#      - 5672:5672
+    restart: always
+
+  write-user-timeline-rabbitmq:
+    image: rabbitmq
+    hostname: write-user-timeline-rabbitmq
+    container_name: social-ml-write-user-timeline-rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WRITE-USER-TIMELINE-RABBITMQ"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    # ports:
+    #  - 15673:15672
+    #  - 5673:5672
+    restart: always
+
+  write-user-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: write-user-timeline-service
+    container_name: social-ml-write-user-timeline-service
+    restart: always
+    entrypoint: WriteUserTimelineService
+    depends_on:
+      - write-user-timeline-rabbitmq
+      - user-timeline-redis
+      - user-timeline-mongodb
+
+  home-timeline-redis:
+    image: redis
+    hostname: home-timeline-redis
+    container_name: social-ml-home-timeline-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+#    ports:
+#      - 6381:6379
+    restart: always
+
+  compose-post-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: compose-post-service
+    container_name: social-ml-compose-post-service
+    depends_on:
+      - write-home-timeline-rabbitmq
+      - write-user-timeline-rabbitmq
+#    ports:
+#      - 10001:9090
+    restart: always
+    entrypoint: ComposePostService
+
+  compose-post-redis:
+    image: redis
+    hostname: compose-post-redis
+    container_name: social-ml-compose-post-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\"  --appendonly no"]  # disable persistence
+#    ports:
+#      - 6382:6379
+    restart: always
+
+  post-storage-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: post-storage-service
+    container_name: social-ml-post-storage-service
+    # ports:
+    #   - 10002:9090
+    restart: always
+    entrypoint: PostStorageService
+    depends_on:
+      - post-storage-memcached
+      - post-storage-mongodb
+
+  post-storage-memcached:
+    image: memcached
+    hostname: post-storage-memcached
+    container_name: social-ml-post-storage-memcached
+#    ports:
+#      - 11212:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=4096
+      - MEMCACHED_THREADS=16
+
+  post-storage-mongodb:
+    image: mongo
+    hostname: post-storage-mongodb
+    container_name: social-ml-post-storage-mongodb
+#    ports:
+#      - 27019:27017
+    restart: always
+
+  user-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: user-timeline-service
+    container_name: social-ml-user-timeline-service
+#    ports:
+#      - 10003:9090
+    restart: always
+    entrypoint: UserTimelineService
+    depends_on:
+      - user-timeline-redis
+      - user-timeline-mongodb
+
+  user-timeline-redis:
+    image: redis
+    hostname: user-timeline-redis
+    container_name: social-ml-user-timeline-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+#    ports:
+#      - 6383:6379
+    restart: always
+
+  user-timeline-mongodb:
+    image: mongo
+    hostname: user-timeline-mongodb
+    container_name: social-ml-user-timeline-mongodb
+#    ports:
+#      - 27020:27017
+    restart: always
+
+  url-shorten-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: url-shorten-service
+    container_name: social-ml-url-shorten-service
+    entrypoint: UrlShortenService
+#    ports:
+#      - 10004:9090
+    restart: always
+
+  user-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: user-service
+    container_name: social-ml-user-service
+#    ports:
+#      - 10005:9090
+    restart: always
+    entrypoint: UserService
+    depends_on:
+      - user-memcached
+      - user-mongodb
+
+  user-memcached:
+    image: memcached
+    hostname: user-memcached
+    container_name: social-ml-user-memcached
+#    ports:
+#      - 11214:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=1024
+      - MEMCACHED_THREADS=16
+
+  user-mongodb:
+    image: mongo
+    hostname: user-mongodb
+    container_name: social-ml-user-mongodb
+#    ports:
+#      - 27023:27017
+    restart: always
+
+  media-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: media-service
+    container_name: social-ml-media-service
+#    ports:
+#      - 10006:9090
+    restart: always
+    entrypoint: MediaService
+
+#   media-memcached:
+#     image: memcached
+#     hostname: media-memcached
+#     container_name: social-ml-media-memcached
+# #    ports:
+# #      - 11215:11211
+#     restart: always
+
+#   media-mongodb:
+#     image: mongo
+#     hostname: media-mongodb
+#     container_name: social-ml-media-mongodb
+# #    ports:
+# #      - 27024:27017
+#     restart: always
+
+  text-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: text-service
+    container_name: social-ml-text-service
+#    ports:
+#      - 10007:9090
+    restart: always
+    entrypoint: TextService
+    depends_on:
+     - user-mention-service
+     - url-shorten-service
+
+  text-filter-service:
+    image: yz2297/social-network-text-filter
+    hostname: text-filter-service
+    container_name: social-ml-text-filter-service
+    # ports:
+    #   - 40000:40000
+    restart: always
+
+  media-filter-service:
+    image: yz2297/social-network-media-filter
+    hostname: media-filter-service
+    container_name: social-ml-media-filter-service
+    # ports:
+    #   - 40000:40000
+    restart: always
+
+  unique-id-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: unique-id-service
+    container_name: social-ml-unique-id-service
+#    ports:
+#      - 10008:9090
+    restart: always
+    entrypoint: UniqueIdService
+
+  user-mention-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: user-mention-service
+    container_name: social-ml-user-mention-service
+#    ports:
+#      - 10009:9090
+    restart: always
+    entrypoint: UserMentionService
+
+  home-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: home-timeline-service
+    container_name: social-ml-home-timeline-service
+#    ports:
+#      - 10010:9090
+    restart: always
+    entrypoint: HomeTimelineService
+    depends_on:
+      - home-timeline-redis
+      - social-graph-service
+
+  nginx-thrift:
+    image: yg397/openresty-thrift:xenial
+    hostname: nginx-thrift
+    container_name: social-ml-nginx-thrift
+    ports:
+      - 8080:8080
+    restart: always
+    volumes:
+      - ./nginx-web-server/lua-scripts:/usr/local/openresty/nginx/lua-scripts
+      - ./nginx-web-server/pages:/usr/local/openresty/nginx/pages
+      - ./nginx-web-server/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./nginx-web-server/jaeger-config.json:/usr/local/openresty/nginx/jaeger-config.json
+      - ./gen-lua:/gen-lua
+      # - /home/yz2297/Software/socialNetwork-ml-swarm/nginx-web-server/lua-scripts:/usr/local/openresty/nginx/lua-scripts
+      # - /home/yz2297/Software/socialNetwork-ml-swarm/nginx-web-server/pages:/usr/local/openresty/nginx/pages
+      # - /home/yz2297/Software/socialNetwork-ml-swarm/nginx-web-server/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      # - /home/yz2297/Software/socialNetwork-ml-swarm/nginx-web-server/jaeger-config.json:/usr/local/openresty/nginx/jaeger-config.json
+      # - /home/yz2297/Software/socialNetwork-ml-swarm/gen-lua:/gen-lua
+    depends_on:
+      - user-service
+      - user-mention-service
+      - media-service
+      - text-service
+      - unique-id-service
+      - url-shorten-service
+      - home-timeline-service
+      - write-user-timeline-service
+      - write-home-timeline-service
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    hostname: jaeger
+    ports:
+#      - 5775:5775/udp
+#      - 6831:6831/udp
+#      - 6832:6832/udp
+#      - 5778:5778
+      - 16686:16686
+#      - 14268:14268
+#      - 9411:9411
+    restart: always
+    volumes:
+      - ./config/sampling_strategies.json:/etc/jaeger/sampling_strategies.json
+    # command: /go/bin/all-in-one-linux --sampling.strategies-file=/etc/jaeger/sampling_strategies.json --memory.max-traces 2000
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+      - MEMORY_MAX_TRACES=1000
+

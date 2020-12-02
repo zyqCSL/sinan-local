@@ -1,0 +1,27 @@
+version: "2"
+services:
+  # 0, 1, 2, 3 for network
+  geo:
+    build: .
+    entrypoint: geo
+    container_name: 'hotel_reserv_geo'
+    ports:
+      - "8083:8083"
+    # depends_on:
+    #   - mongodb-geo
+      # - consul
+    restart: always
+    cpuset: "12,14,16,18"
+
+  rate:
+    build: .
+    entrypoint: rate
+    container_name: 'hotel_reserv_rate'
+    ports:
+      - "8084:8084"
+    # depends_on:
+    #   - mongodb-rate
+    #   - memcached-rate
+      # - consul
+    restart: always
+    cpuset: "13,15,17,19"

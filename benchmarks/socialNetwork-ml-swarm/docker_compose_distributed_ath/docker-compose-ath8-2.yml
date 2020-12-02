@@ -1,0 +1,176 @@
+version: "2"
+services:
+  # 0, 1, 2, 3, 4, 5, 6, 7 for network
+
+  # Resolving container hostnames from host machine
+  # CAUTION: could affect host machine networking
+#  dns-social-network:
+#    image: defreitas/dns-proxy-server
+#    volumes:
+#      - /opt/dns-proxy-server/conf:/app/conf
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/resolv.conf:/etc/resolv.conf
+
+  compose-post-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-compose-post-service
+    # hostname: compose-post-service
+    ports:
+     - 10001:10001
+    restart: always
+    entrypoint: ComposePostService
+    # depends_on:
+    #   - write-home-timeline-rabbitmq
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "9,11,13,15,17,19"
+    # network_mode: "host"
+
+  user-memcached:
+    image: memcached
+    # hostname: user-memcached
+    container_name: social-network-ath-user-memcached
+    ports:
+     - 11214:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=1024
+      - MEMCACHED_THREADS=2
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "4,6"
+
+  user-mongodb:
+    image: mongo
+    # hostname: user-mongodb
+    container_name: social-network-ath-user-mongodb
+    volumes:
+      - /filer01/yz2297/cs6780/Project/social_media_volumes/user-mongodb:/data/db
+    ports:
+     - 27023:27017
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "5,7"
+
+  post-storage-memcached:
+    image: memcached
+    container_name: social-network-ath-post-storage-memcached
+    # hostname: post-storage-memcached
+    ports:
+     - 11212:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=4096
+      - MEMCACHED_THREADS=4
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "21,23,25,27"
+
+  post-storage-mongodb:
+    container_name: social-network-ath-post-storage-mongodb
+    image: mongo
+    volumes:
+      - /filer01/yz2297/cs6780/Project/social_media_volumes/post-storage-mongodb:/data/db
+    # hostname: post-storage-mongodb
+    ports:
+     - 27019:27017
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "29,31"
+
+  social-graph-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-social-graph-service
+    # hostname: social-graph-service
+    ports:
+     - 10000:10000
+    restart: always
+    entrypoint: SocialGraphService
+    # depends_on:
+    #  - social-graph-redis
+    #  - social-graph-mongodb
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "33,35,37,39"
+    # network_mode: "host"
+
+  home-timeline-redis:
+    image: redis
+    # hostname: home-timeline-redis
+    container_name: social-network-ath-home-timeline-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+    ports:
+     - 6381:6379
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "8,10,12,14"
+
+  home-timeline-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-home-timeline-service
+    # hostname: home-timeline-service
+    ports:
+     - 10010:10010
+    restart: always
+    entrypoint: HomeTimelineService
+    depends_on:
+     - home-timeline-redis
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "16,18,20,22,24,26"
+    # network_mode: "host"
+
+  user-timeline-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-user-timeline-service
+    # hostname: user-timeline-service
+    ports:
+     - 10003:10003
+    restart: always
+    entrypoint: UserTimelineService
+    # depends_on:
+    #   - user-timeline-redis
+    #   - write-user-timeline-rabbitmq
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "28,30,32,34"
+    # network_mode: "host"
+
+  user-timeline-redis:
+    image: redis
+    container_name: social-network-ath-user-timeline-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+    # hostname: user-timeline-redis
+    ports:
+     - 6383:6379
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "36,38,40,42"
+
+  user-timeline-mongodb:
+    image: mongo
+    container_name: social-network-ath-user-timeline-mongodb
+    # hostname: user-timeline-mongodb
+    volumes:
+      - /filer01/yz2297/cs6780/Project/social_media_volumes/user-timeline-mongodb:/data/db
+    ports:
+     - 27020:27017
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "41,43"

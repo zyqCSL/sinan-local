@@ -1,0 +1,17 @@
+FROM alpine:latest
+
+RUN apk add --update \
+    python \
+    py-pip \
+    wget \
+    ca-certificates \
+  && update-ca-certificates \
+  && rm -rf /var/cache/apk/*
+
+COPY ./ /social-network-microservices
+
+RUN pip install -r /social-network-microservices/requirements.txt
+
+WORKDIR   /social-network-microservices/test
+
+ENTRYPOINT ["python", "TestTextFilterService.py"]

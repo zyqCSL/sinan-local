@@ -1,0 +1,22 @@
+# docker-compose up --scale worker=4
+version: '3'
+
+services:
+  master:
+    image: yz2297/locust_openwhisk
+    # ports:
+    #  - "8089:8089"
+    network_mode: host
+    volumes:
+      - ./src:/mnt/locust
+      - $HOME/sinan_locust_log:/mnt/locust_log
+    command: -f /mnt/locust/hotel_rps_100.py --master --csv=/mnt/locust_log/hotel --headless --host http://127.0.0.1:5000 --users ${USERS} -t ${EXP_TIME} --logfile /mnt/locust_log/hotel_locust_log.txt
+  
+  worker:
+    image: yz2297/locust_openwhisk
+    volumes:
+      - ./src:/mnt/locust
+      - $HOME/sinan_locust_log:/mnt/locust_log
+    network_mode: "host"
+    # command: -f /mnt/locust/hotel_rps_100.py --worker --master-host master
+    command: -f /mnt/locust/hotel_rps_100.py --worker

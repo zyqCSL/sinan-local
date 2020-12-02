@@ -1,0 +1,143 @@
+version: "2"
+services:
+  # 0, 1, 2, 3, 4, 5, 6, 7 for network
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    entrypoint: "/go/bin/all-in-one-linux --sampling.strategies-file=/etc/jaeger/sampling_strategies.json --memory.max-traces=10000"
+    container_name: 'hotel_reserv_jaeger'
+    ports:
+      - "14269"
+      - "5778:5778"
+      - "14268:14268"
+      - "14267"
+      - "16686:16686"
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+    restart: always
+    cpuset: "37,39,41,43,40,42"
+
+  memcached-rate:
+    image: memcached
+    # hostname: user-memcached
+    container_name: 'hotel_reserv_rate_mmc'
+    ports:
+     - 11212:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+      - MEMCACHED_THREADS=4
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "9,11,13,15"
+
+  memcached-profile:
+    image: memcached
+    # hostname: user-memcached
+    container_name: 'hotel_reserv_profile_mmc'
+    ports:
+     - 11213:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+      - MEMCACHED_THREADS=4
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "8,10,12,14"
+
+  memcached-reserve:
+    image: memcached
+    # hostname: user-memcached
+    container_name: 'hotel_reserv_reservation_mmc'
+    ports:
+     - 11214:11211
+    restart: always
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+      - MEMCACHED_THREADS=4
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "21,23,25,27"
+
+  mongodb-geo:
+    image: mongo
+    container_name: 'hotel_reserv_geo_mongo'
+    # hostname: geo-db
+    ports:
+      - "27018:27017"
+    restart: always
+    volumes:
+      - geo:/data/db
+    command: --smallfiles
+    cpuset: "20,22"
+
+  mongodb-profile:
+    image: mongo
+    container_name: 'hotel_reserv_profile_mongo'
+    # hostname: profile-db
+    ports:
+      - "27019:27017"
+    restart: always
+    volumes:
+      - profile:/data/db
+    command: --smallfiles
+    cpuset: "16,18,24,26"
+
+  mongodb-rate:
+    image: mongo
+    container_name: 'hotel_reserv_rate_mongo'
+    # hostname: rate-db
+    ports:
+      - "27020:27017"
+    restart: always
+    volumes:
+      - rate:/data/db
+    command: --smallfiles
+    cpuset: "17,19,28,30"
+
+  mongodb-recommendation:
+    image: mongo
+    # hostname: recommendation-db
+    container_name: 'hotel_reserv_recommendation_mongo'
+    ports:
+      - "27021:27017"
+    restart: always
+    volumes:
+      - recommendation:/data/db
+    command: --smallfiles
+    cpuset: "33,35"
+
+  mongodb-reservation:
+    image: mongo
+    container_name: 'hotel_reserv_reservation_mongo'
+    # hostname: reservation-db
+    ports:
+      - "27022:27017"
+    restart: always
+    volumes:
+      - reservation:/data/db
+    command: --smallfiles
+    cpuset: "29,31,32,34"
+
+  mongodb-user:
+    image: mongo
+    container_name: 'hotel_reserv_user_mongo'
+    hostname: user-db
+    ports:
+      - "27023:27017"
+    restart: always
+    volumes:
+      - user:/data/db
+    command: --smallfiles
+    cpuset: "36,38"
+
+volumes:
+  geo:
+  profile:
+  rate:
+  recommendation:
+  reservation:
+  user:

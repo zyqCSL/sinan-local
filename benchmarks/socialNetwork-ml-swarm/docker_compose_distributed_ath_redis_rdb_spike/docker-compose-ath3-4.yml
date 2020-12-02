@@ -1,0 +1,31 @@
+version: "2"
+services:
+  # 0, 1, 2, 3 for network
+
+  # Resolving container hostnames from host machine
+  # CAUTION: could affect host machine networking
+#  dns-social-network:
+#    image: defreitas/dns-proxy-server
+#    volumes:
+#      - /opt/dns-proxy-server/conf:/app/conf
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/resolv.conf:/etc/resolv.conf
+
+  nginx-thrift:
+    image: yg397/openresty-thrift:xenial
+    container_name: social-network-ath-nginx-thrift
+    # hostname: nginx-thrift
+    ports:
+      - 8080:8080
+    restart: always
+    volumes:
+      - /home/yz2297/Software/deathstar_suite/socialNetwork-distributed-ath-write-user-tl/nginx-web-server/lua-scripts:/usr/local/openresty/nginx/lua-scripts
+      - /home/yz2297/Software/deathstar_suite/socialNetwork-distributed-ath-write-user-tl/nginx-web-server/pages:/usr/local/openresty/nginx/pages
+      - /home/yz2297/Software/deathstar_suite/socialNetwork-distributed-ath-write-user-tl/nginx-web-server/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - /home/yz2297/Software/deathstar_suite/socialNetwork-distributed-ath-write-user-tl/nginx-web-server/jaeger-config.json:/usr/local/openresty/nginx/jaeger-config.json
+      - /home/yz2297/Software/deathstar_suite/socialNetwork-distributed-ath-write-user-tl/gen-lua:/gen-lua
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19"
+

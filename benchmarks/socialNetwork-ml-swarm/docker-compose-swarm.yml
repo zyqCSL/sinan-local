@@ -1,0 +1,659 @@
+version: "3.8"
+services:
+  social-graph-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: social-graph-service
+#    ports:
+#      - 10000:9090
+    entrypoint: SocialGraphService
+    depends_on:
+      - jaeger
+      - social-graph-mongodb
+      - social-graph-redis
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+    volumes:
+      - ./config:/social-network-microservices/config
+
+  social-graph-mongodb:
+    image: mongo
+    hostname: social-graph-mongodb
+#    ports:
+#      - 27018:27017
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  social-graph-redis:
+    image: redis
+    hostname: social-graph-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+#    ports:
+#      - 6380:6379
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  write-home-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: write-home-timeline-service
+    entrypoint: WriteHomeTimelineService
+    depends_on:
+      - write-home-timeline-rabbitmq
+      - home-timeline-redis
+      - social-graph-service
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  write-home-timeline-rabbitmq:
+    image: rabbitmq
+    hostname: write-home-timeline-rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WRITE-HOME-TIMELINE-RABBITMQ"
+      RABBITMQ_DEFAULT_VHOST: "/"
+#    ports:
+#      - 15672:15672
+#      - 5672:5672
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        # max_replicas_per_node: 2
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  write-user-timeline-rabbitmq:
+    image: rabbitmq
+    hostname: write-user-timeline-rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WRITE-USER-TIMELINE-RABBITMQ"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    # ports:
+    #  - 15673:15672
+    #  - 5673:5672
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        # max_replicas_per_node: 2
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  write-user-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: write-user-timeline-service
+    entrypoint: WriteUserTimelineService
+    depends_on:
+      - write-user-timeline-rabbitmq
+      - user-timeline-redis
+      - user-timeline-mongodb
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  home-timeline-redis:
+    image: redis
+    hostname: home-timeline-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+#    ports:
+#      - 6381:6379
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  compose-post-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: compose-post-service
+#    ports:
+#      - 10001:9090
+    entrypoint: ComposePostService
+    depends_on:
+      - write-home-timeline-rabbitmq
+      - write-user-timeline-rabbitmq
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  compose-post-redis:
+    image: redis
+    hostname: compose-post-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\"  --appendonly no"]  # disable persistence
+#    ports:
+#      - 6382:6379
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  post-storage-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: post-storage-service
+    # ports:
+    #   - 10002:9090
+    entrypoint: PostStorageService
+    depends_on:
+      - post-storage-mongodb
+      - post-storage-memcached
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.labels.type == data
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  post-storage-memcached:
+    image: memcached:1.6.0
+    hostname: post-storage-memcached
+#    ports:
+#      - 11212:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=4096
+      - MEMCACHED_THREADS=8
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  post-storage-mongodb:
+    image: mongo
+    hostname: post-storage-mongodb
+#    ports:
+#      - 27019:27017
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: user-timeline-service
+#    ports:
+#      - 10003:9090
+    entrypoint: UserTimelineService
+    depends_on:
+      - user-timeline-redis
+      - user-timeline-mongodb
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-timeline-redis:
+    image: redis
+    hostname: user-timeline-redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+#    ports:
+#      - 6383:6379
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-timeline-mongodb:
+    image: mongo
+    hostname: user-timeline-mongodb
+#    ports:
+#      - 27020:27017
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  url-shorten-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: url-shorten-service
+#    ports:
+#      - 10004:9090
+    entrypoint: UrlShortenService
+    depends_on:
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: user-service
+#    ports:
+#      - 10005:9090
+    entrypoint: UserService
+    depends_on:
+      - user-mongodb
+      - user-memcached
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-memcached:
+    image: memcached:1.6.0
+    hostname: user-memcached
+#    ports:
+#      - 11214:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=4096
+      - MEMCACHED_THREADS=8
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-mongodb:
+    image: mongo
+    hostname: user-mongodb
+#    ports:
+#      - 27023:27017
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  media-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: media-service
+#    ports:
+#      - 10006:9090
+    entrypoint: MediaService
+    depends_on:
+      - jaeger
+    deploy:
+      mode: replicated
+      # endpoint_mode: dnsrr
+      replicas: 4
+      placement:
+        max_replicas_per_node: 2
+        # constraints:
+        #   - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  media-filter-service:
+    image: yz2297/social-network-media-filter
+    hostname: media-filter-service
+    deploy:
+      mode: replicated
+      # endpoint_mode: dnsrr
+      replicas: 16
+      placement:
+        max_replicas_per_node: 8
+        # constraints:
+        #   - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  text-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: text-service
+#    ports:
+#      - 10007:9090
+    entrypoint: TextService
+    depends_on:
+      - user-mention-service
+      - url-shorten-service
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+        - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  text-filter-service:
+    image: yz2297/social-network-text-filter
+    hostname: text-filter-service
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+        - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  unique-id-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: unique-id-service
+#    ports:
+#      - 10008:9090
+    entrypoint: UniqueIdService
+    depends_on:
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  user-mention-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: user-mention-service
+#    ports:
+#      - 10009:9090
+    entrypoint: UserMentionService
+    depends_on:
+      - jaeger
+    deploy:
+      mode: replicated
+      endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == compute
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  home-timeline-service:
+    image: yz2297/social-network-ml-swarm
+    hostname: home-timeline-service
+#    ports:
+#      - 10010:9090
+    entrypoint: HomeTimelineService
+    depends_on:
+      - jaeger
+      - home-timeline-redis
+      - social-graph-service
+    deploy:
+      mode: replicated
+      # endpoint_mode: dnsrr
+      replicas: 4
+      placement:
+        max_replicas_per_node: 4
+        constraints:
+          - node.labels.type == data
+    volumes:
+      - ./config:/social-network-microservices/config
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  nginx-thrift:
+    image: yg397/openresty-thrift:xenial
+    hostname: nginx-web-server
+    ports:
+      - 8080:8080
+      # - target: 8080
+      #   published: 8080
+      #   protocol: tcp
+      #   mode: host
+    volumes:
+      - ./nginx-web-server/lua-scripts:/usr/local/openresty/nginx/lua-scripts
+      - ./nginx-web-server/pages:/usr/local/openresty/nginx/pages
+      - ./nginx-web-server/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./nginx-web-server/jaeger-config.json:/usr/local/openresty/nginx/jaeger-config.json
+      - ./gen-lua:/gen-lua
+    depends_on:
+      - jaeger
+    deploy:
+      mode: replicated
+      # endpoint_mode: dnsrr
+      replicas: 4
+      placement:
+        max_replicas_per_node: 4
+        constraints:
+          - node.labels.type == compute
+    depends_on:
+      - user-service
+      - user-mention-service
+      - media-service
+      - text-service
+      - unique-id-service
+      - url-shorten-service
+      - home-timeline-service
+      - write-user-timeline-service
+      - write-home-timeline-service
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    hostname: jaeger
+    ports:
+#      - 5775:5775/udp
+#      - 6831:6831/udp
+#      - 6832:6832/udp
+#      - 5778:5778
+      - 16686:16686
+#      - 14268:14268
+      - 9411:9411
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    deploy:
+      mode: replicated
+      # endpoint_mode: dnsrr
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == data
+    sysctls:
+      net.ipv4.tcp_keepalive_time: 600
+      net.ipv4.tcp_keepalive_intvl: 60
+      net.ipv4.tcp_keepalive_probes: 3
+      

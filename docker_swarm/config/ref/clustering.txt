@@ -1,0 +1,432 @@
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-service coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-service coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+url-shorten-service coeff = 0
+user-mention-service coeff = 0
+post-storage-memcached coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+home-timeline-service coeff = 0
+home-timeline-redis coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+nginx-thrift, post-storage-service coeff = 0.79
+
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-service coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-service coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+url-shorten-service coeff = 0
+user-mention-service coeff = 0
+post-storage-memcached coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+home-timeline-redis coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+home-timeline-service, nginx-thrift, post-storage-service coeff = 0.76
+
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-service coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-service coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+url-shorten-service coeff = 0
+user-mention-service coeff = 0
+post-storage-memcached coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.74
+
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-service coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+url-shorten-service coeff = 0
+user-mention-service coeff = 0
+post-storage-memcached coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.73
+
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-service coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-memcached coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.72
+
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-service coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.72
+
+-------------new cluster establised----------------
+compose-post-service coeff = 0
+compose-post-redis coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.72
+
+-------------new cluster establised----------------
+compose-post-redis coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-service coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.72
+
+-------------new cluster establised----------------
+compose-post-redis coeff = 0
+text-filter coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.71
+
+-------------new cluster establised----------------
+compose-post-redis coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.71
+
+-------------new cluster establised----------------
+compose-post-redis coeff = 0
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.71
+
+-------------new cluster establised----------------
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+unique-id-service coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.7
+
+-------------new cluster establised----------------
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-redis coeff = 0
+social-graph-mongodb coeff = 0
+unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.7
+
+-------------new cluster establised----------------
+user-service coeff = 0
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.7
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-mention-service coeff = 0
+post-storage-mongodb coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.7
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-mention-service coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.7
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+user-timeline-redis coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.69
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+user-timeline-mongodb coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.69
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+write-home-timeline-rabbitmq coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.69
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+write-user-timeline-service coeff = 0
+write-user-timeline-rabbitmq coeff = 0
+social-graph-mongodb coeff = 0
+write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.68
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+write-user-timeline-service coeff = 0
+social-graph-mongodb coeff = 0
+write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.68
+
+-------------new cluster establised----------------
+user-memcached coeff = 0
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+social-graph-mongodb coeff = 0
+write-user-timeline-service, write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.67
+
+-------------new cluster establised----------------
+user-mongodb coeff = 0
+media-filter coeff = 0
+user-timeline-service coeff = 0
+social-graph-mongodb coeff = 0
+user-memcached, write-user-timeline-service, write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.67
+
+-------------new cluster establised----------------
+user-mongodb coeff = 0
+media-filter coeff = 0
+social-graph-mongodb coeff = 0
+user-timeline-service, user-memcached, write-user-timeline-service, write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.6
+
+-------------new cluster establised----------------
+user-mongodb coeff = 0
+social-graph-mongodb coeff = 0
+media-filter, user-timeline-service, user-memcached, write-user-timeline-service, write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.51
+
+-------------new cluster establised----------------
+user-mongodb coeff = 0
+social-graph-mongodb, media-filter, user-timeline-service, user-memcached, write-user-timeline-service, write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.44
+
+-------------new cluster establised----------------
+user-mongodb, social-graph-mongodb, media-filter, user-timeline-service, user-memcached, write-user-timeline-service, write-user-timeline-rabbitmq, write-home-timeline-rabbitmq, user-timeline-mongodb, user-timeline-redis, user-mention-service, post-storage-mongodb, user-service, social-graph-redis, unique-id-service, compose-post-redis, write-home-timeline-service, text-filter, social-graph-service, compose-post-service, media-service, post-storage-memcached, url-shorten-service, text-service, home-timeline-redis, home-timeline-service, nginx-thrift, post-storage-service coeff = 0.34
+

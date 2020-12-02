@@ -1,0 +1,76 @@
+version: "2"
+services:
+  # 0, 1, 2, 3, 4, 5, 6, 7 for network
+  profile:
+    build: .
+    entrypoint: profile
+    container_name: 'hotel_reserv_profile'
+    ports:
+      - "8081:8081"
+    depends_on:
+    #   - mongodb-profile
+    #   - memcached-profile
+      - consul
+    restart: always
+    cpuset: "9,11,13,15,17,19,41,43"
+
+  search:
+    build: .
+    entrypoint: search
+    container_name: 'hotel_reserv_search'
+    ports:
+      - "8082:8082"
+    depends_on:
+      - consul
+    restart: always
+    cpuset: "8,10,12,14,16,18,20,22"
+    # environment:
+      # - GRPC_GO_LOG_VERBOSITY_LEVEL=2
+      # - GRPC_GO_LOG_SEVERITY_LEVEL=info
+
+  recommendation:
+    build: .
+    entrypoint: recommendation
+    container_name: 'hotel_reserv_recommendation'
+    ports:
+      - "8085:8085"
+    depends_on:
+    #   - mongodb-recommendation
+      - consul
+    restart: always
+    cpuset: "21,23,25,27,29,31"
+
+  user:
+    build: .
+    entrypoint: user
+    container_name: 'hotel_reserv_user'
+    ports:
+      - "8086:8086"
+    # depends_on:
+    #   - mongodb-user
+    #   - consul
+    restart: always
+    cpuset: "33,35,37,39"
+
+  reservation:
+    build: .
+    entrypoint: reservation
+    container_name: 'hotel_reserv_reservation'
+    ports:
+      - "8087:8087"
+    depends_on:
+    #   - mongodb-reservation
+    #   - memcached-reserve
+      - consul
+    restart: always
+    cpuset: "24,26,28,30"
+
+  consul:
+    image: consul:latest
+    ports:
+      - "8300:8300"
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:53/udp"
+    restart: always
+    cpuset: "32,34"

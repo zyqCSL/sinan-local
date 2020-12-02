@@ -1,0 +1,185 @@
+version: "2"
+services:
+  # execute after ath-8, since compose-post-service's dependence on rabbitmq
+  # 0, 1, 2, 3, 4, 5, 6, 7 for network
+
+  # Resolving container hostnames from host machine
+  # CAUTION: could affect host machine networking
+#  dns-social-network:
+#    image: defreitas/dns-proxy-server
+#    volumes:
+#      - /opt/dns-proxy-server/conf:/app/conf
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/resolv.conf:/etc/resolv.conf
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    entrypoint: "/go/bin/all-in-one-linux --sampling.strategies-file=/etc/jaeger/sampling_strategies.json --memory.max-traces=100"
+    # hostname: jaeger
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 9411:9411
+    restart: always
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "9,11,28,30,32,34"  
+
+  write-home-timeline-rabbitmq:
+    image: rabbitmq
+    container_name: social-network-ath-write-home-timeline-rabbitmq
+    # hostname: write-home-timeline-rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WRITE-HOME-TIMELINE-RABBITMQ"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+     - 15672:15672
+     - 5672:5672
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "13,15"
+
+  write-home-timeline-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-write-home-timeline-service
+    # hostname: write-home-timeline-service
+    restart: always
+    entrypoint: WriteHomeTimelineService
+    depends_on:
+      - write-home-timeline-rabbitmq
+      # - home-timeline-redis
+      # - social-graph-service
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "17,19,21,23"
+    # network_mode: "host"
+
+  write-user-timeline-rabbitmq:
+    image: rabbitmq
+    container_name: social-network-ath-write-user-timeline-rabbitmq
+    # hostname: write-home-timeline-rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WRITE-USER-TIMELINE-RABBITMQ"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+     - 15673:15672
+     - 5673:5672
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "25,27"
+
+  write-user-timeline-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-write-user-timeline-service
+    # hostname: write-home-timeline-service
+    restart: always
+    entrypoint: WriteUserTimelineService
+    depends_on:
+      - write-user-timeline-rabbitmq
+      # - user-timeline-redis
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "29,31"
+    # network_mode: "host"
+
+  social-graph-mongodb:
+    image: mongo
+    # hostname: social-graph-mongodb
+    container_name: social-network-ath-social-graph-mongodb
+    volumes:
+      - /filer01/yz2297/cs6780/Project/social_media_volumes/social-graph-mongodb:/data/db
+    ports:
+     - 27018:27017
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "33,35"
+
+  social-graph-redis:
+    image: redis
+    # hostname: social-graph-redis
+    container_name: social-network-ath-social-graph-redis
+    # command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\" --appendonly no"]  # disable persistence
+    ports:
+     - 6380:6379
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "37,39,41,43"
+
+  post-storage-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-post-storage-service
+    # hostname: post-storage-service
+    ports:
+      - 10002:10002
+    restart: always
+    entrypoint: PostStorageService
+    logging:
+      options:
+        max-size: 50m
+    # depends_on:
+    #   - post-storage-memcached
+    #   - post-storage-mongodb
+    cpuset: "8,10,12,14,16,18"
+    # network_mode: "host"
+
+  compose-post-redis:
+    image: redis
+    # hostname: compose-post-redis
+    container_name: social-network-ath-compose-post-redis
+    # command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save \"\"  --appendonly no"]  # disable persistence
+    ports:
+     - 6382:6379
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "20,22,24,26"
+
+
+  # ori ath5
+  user-mention-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    container_name: social-network-ath-user-mention-service
+    # hostname: user-mention-service
+    ports:
+     - 10009:10009
+    restart: always
+    entrypoint: UserMentionService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "36,38"
+    # network_mode: "host"
+
+  url-shorten-service:
+    image: yz2297/social-network-microservices-distributed-ath
+    # hostname: url-shorten-service
+    container_name: social-network-ath-url-shorten-service
+    ports:
+     - 10004:10004
+    restart: always
+    entrypoint: UrlShortenService
+    logging:
+      options:
+        max-size: 50m
+    cpuset: "40,42"
+    # network_mode: "host"
+
+  
+

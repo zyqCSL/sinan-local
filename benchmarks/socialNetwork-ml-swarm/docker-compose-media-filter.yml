@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+  # Resolving container hostnames from host machine
+  # CAUTION: could affect host machine networking
+#  dns-social-network:
+#    image: defreitas/dns-proxy-server
+#    volumes:
+#      - /opt/dns-proxy-server/conf:/app/conf
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/resolv.conf:/etc/resolv.conf
+
+  media-filter-service:
+    image: yz2297/social-network-media-filter
+    hostname: media-filter-service
+    container_name: social-network-media-filter
+    # ports:
+    #   - 40000:40000
+    restart: always

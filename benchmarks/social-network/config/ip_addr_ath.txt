@@ -1,0 +1,44 @@
+ath2: 128.253.128.65
+ath3: 128.253.128.66
+ath4: 128.253.128.67
+ath5: 128.253.128.68
+ath8: ath-8-ip
+ath9: ath-9-ip
+
+
+ath-8 
+compose-post-service
+post-storage-memcached
+post-storage-mongodb
+social-graph-service
+home-timeline-redis
+home-timeline-service
+user-timeline-service
+user-timeline-redis
+user-timeline-mongodb
+
+ath-9 
+write-home-timeline-rabbitmq
+write-home-timeline-service
+write-user-timeline-rabbitmq
+write-user-timeline-service
+social-graph-mongodb
+social-graph-redis
+post-storage-service
+compose-post-redis
+
+jaeger 
+
+ath-2 14
+user-service 2
+user-memcached 2
+user-mongodb 2
+
+media-service 2
+unique-id-service 2
+text-service 2
+user-mention-service 2
+url-shorten-service 2
+
+ath-3 14
+nginx 16

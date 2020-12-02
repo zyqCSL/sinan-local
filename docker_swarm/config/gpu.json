@@ -1,0 +1,10 @@
+{
+    "gpus": [
+        0,
+        1
+    ],
+    "host": "tsg-gpu1.ece.cornell.edu",
+    "ip_addr": "gpu-server-ip",
+    "script": "social_media_predictor.py",
+    "working_dir": "/home/yz2297/sinan-local/ml_docker_swarm"
+}

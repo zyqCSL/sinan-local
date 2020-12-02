@@ -1,0 +1,95 @@
+{
+  "secret": "secret",
+  "social-graph-service": {
+    "addr": "ath-8-ip",
+    "port": 10000
+  },
+  "social-graph-mongodb": {
+    "addr": "ath-9-ip",
+    "port": 27018
+  },
+  "social-graph-redis": {
+    "addr": "ath-9-ip",
+    "port": 6380
+  },
+  "write-home-timeline-rabbitmq": {
+    "addr": "ath-9-ip",
+    "port": 5672
+  },
+  "home-timeline-redis": {
+    "addr": "ath-8-ip",
+    "port": 6381
+  },
+  "compose-post-service": {
+    "addr": "ath-8-ip",
+    "port": 10001
+  },
+  "compose-post-redis": {
+    "addr": "ath-9-ip",
+    "port": 6382
+  },
+  "user-timeline-service": {
+    "addr": "ath-8-ip",
+    "port": 10003
+  },
+  "user-timeline-mongodb": {
+    "addr": "ath-8-ip",
+    "port": 27020
+  },
+  "write-user-timeline-rabbitmq": {
+    "addr": "ath-9-ip",
+    "port": 5673
+  },
+  "user-timeline-redis": {
+    "addr": "ath-8-ip",
+    "port": 6383
+  },
+  "post-storage-service": {
+    "addr": "ath-9-ip",
+    "port": 10002
+  },
+  "post-storage-mongodb": {
+    "addr": "ath-8-ip",
+    "port": 27019
+  },
+  "post-storage-memcached": {
+    "addr": "ath-8-ip",
+    "port": 11212
+  },
+  "unique-id-service": {
+    "addr": "128.253.128.65",
+    "port": 10008
+  },
+  "media-service": {
+    "addr": "128.253.128.65",
+    "port": 10006
+  },
+  "text-service": {
+    "addr": "128.253.128.65",
+    "port": 10007
+  },
+  "user-mention-service": {
+    "addr": "128.253.128.65",
+    "port": 10009
+  },
+  "url-shorten-service": {
+    "addr": "128.253.128.65",
+    "port": 10004
+  },
+  "user-service": {
+    "addr": "128.253.128.65",
+    "port": 10005
+  },
+  "user-memcached": {
+    "addr": "128.253.128.65",
+    "port": 11214
+  },
+  "user-mongodb": {
+    "addr": "128.253.128.65",
+    "port": 27023
+  },
+   "home-timeline-service": {
+    "addr": "ath-8-ip",
+    "port": 10010
+  }
+}
