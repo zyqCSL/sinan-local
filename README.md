@@ -30,7 +30,7 @@ Please make sure to generate the configuration files specific to your local clus
 - Service cluster configuration (`docker_swarm/misc/make_cluster_config.py`)
 - Inference engine configuration (`docker_swarm/misc/make_gpu_config.py`)
 
-The config directory in this repo contains an example configuration with 2 serveres each with 88 cpus, and a dedicated gpu server for inference.
+The config directory in this repo contains an example configuration with 2 serveres each with 88 cpus, and a dedicated gpu server for inference. In order to reproduce experiments in the paper, cpu resoruces in the cluster are expected to be no less than the provided configuration.
 
 ### Data collection & Deployment
 Short cut scripts for data collection & deployment can be found in `docker_swarm/scripts`. 
