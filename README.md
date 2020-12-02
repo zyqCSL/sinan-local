@@ -15,6 +15,7 @@ series = {ASPLOS '21}
 ## Prerequisites
 - Ubuntu 18.04
 - Docker 19.03
+- Docker swarm
 - Python 3.5+
 - MXNet
 - XGBoost
