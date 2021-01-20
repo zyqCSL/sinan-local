@@ -32,17 +32,17 @@ The config directory in this repo contains an example configuration with 2 serve
 For exmaple, in `docker_swarm/misc`, `python3 make_cluster_config.py --nodes ath-8 ath-9 --cluster-config test_cluster.json --replica-cpus 4` generates the cluster configuration for deploying SocialNetwork using two servers ath-8 and ath-9, and saves it as `docker_swarm/config/test_cluster.json`. 
 
 For adapting to your own local cluster, please check the following:
-*modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L40-L47 to include the ips of your servers. You probably need to remove the DROP rule in INPUT & FORWARD from iptables for these servers to be connected, and make sure servers can be sshed from each other
+* modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L40-L47 to include the ips of your servers. You probably need to remove the DROP rule in INPUT & FORWARD from iptables for these servers to be connected, and make sure servers can be sshed from each other
 
-*modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L108-L121 to change the virtual cpu number and tags of the servers included in the cluster (the tags are used to control service placement. Please check the placement constraints in the benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml, for example in https://github.com/zyqCSL/sinan-local/blob/master/benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml#L17-L19. The compose file assumes two types of servers, tagged with 'data' and 'compute' correspondingly.)
+* modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L108-L121 to change the virtual cpu number and tags of the servers included in the cluster (the tags are used to control service placement. Please check the placement constraints in the benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml, for example in https://github.com/zyqCSL/sinan-local/blob/master/benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml#L17-L19. The compose file assumes two types of servers, tagged with 'data' and 'compute' correspondingly.)
 
 #### Inference engine configuration (`docker_swarm/misc/make_gpu_config.py`)
 In `docker_swarm/misc`, `python3 make_gpu_config.py --gpu-config gpu.json` generates the predictor configuration and saves it in `docker_swarm/config/gpu.json`. 
 
 Modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_gpu_config.py#L31-L34 to adapt to your own cluster 
-*`gpu_config['gpus']` to the list of gpus to use, `[0]` if you only have one 
-*`gpu_config['host']` to the ip of your own gpu server
-*`gpu_config['working_dir']` to your own working directory of predictor (the path of  `ml_docker_swarm` of the cloned repo). 
+* `gpu_config['gpus']` to the list of gpus to use, `[0]` if you only have one 
+* `gpu_config['host']` to the ip of your own gpu server
+* `gpu_config['working_dir']` to your own working directory of predictor (the path of  `ml_docker_swarm` of the cloned repo). 
 
 #### Setting up docker swarm cluster
 On the master node, in `docker_swarm` directory, execute `python3 setup_swarm_cluster.py --user-name USERNAME --deploy-config test_cluster.json`, in which `test_cluster.json` is the generated cluster configuration. You can use `docker node ls` to make sure that the required servers are addeded and `docker node inspect SERVERNAME` to inspect they are tagged properly (check "Spec"::"Label" in the output json).
