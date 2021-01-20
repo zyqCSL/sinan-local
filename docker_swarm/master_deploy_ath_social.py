@@ -38,6 +38,7 @@ random.seed(time.time())
 # -----------------------------------------------------------------------
 # miscs
 # -----------------------------------------------------------------------
+os.makedirs(str(Path.cwd() / 'logs'), exist_ok=True)
 logging.basicConfig(level=logging.INFO,
 					filename=str(Path.cwd() / 'logs' / 'deploy_log.txt'),
 					filemode='w+',
