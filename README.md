@@ -53,10 +53,10 @@ On the master node, in `docker_swarm` directory, execute `python3 setup_swarm_cl
 Short cut scripts for data collection & deployment can be found in `docker_swarm/scripts`. For example,  within `docker_swarm/scripts`, executing `run_data_collect.sh` will collect training samples of SocialNetwork for concurrent user number from 2 to 48. Generated data are stored in `docker_swarm/logs/collected_data`.
 
 For adapting to your own local cluster, please modify:
-* --deploy-config to your own cluster configuration (generated before)
-* --user-name Your own username
-* --exp-time the running time for each user number
-* --min-users, --max-users, --users-step. Generated training will include \[min_users, max_users, users_step\]. If you are using a smaller cluster, you might want to scale down the max_users. This repo uses 2 88-vcpu servers, and you can scale down the max-users proportionally, or you can start from short experiments and check when your cluster saturates.
+* `--deploy-config` to your own cluster configuration (generated before)
+* `--user-name` Your own username
+* `--exp-time` the running time for each user number
+* `--min-users`, `--max-users`, `--users-step`. Generated training will include \[min_users, max_users, users_step\]. If you are using a smaller cluster, you might want to scale down the max_users. This repo uses 2 88-vcpu servers, and you can scale down the max-users proportionally, or you can start from short experiments and check when your cluster saturates.
 
 ### Modeling training
 GPU is required for model training. The following steps assume you are in `ml_docker_swarm`.
