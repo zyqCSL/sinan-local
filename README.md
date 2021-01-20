@@ -96,7 +96,9 @@ GPU is required for deployment. The shortcut scripts for deployment are in `dock
 
 #### SocialNetwork
 ##### Static load
-`test_deploy.sh` tests the deployment situation with concurrent users in \[5, 45, 5\]. To adapt to your own cluster, please modify the following:
+`test_deploy.sh` tests the deployment situation with concurrent users in \[5, 45, 5\]. Execution logs are saved in `docker_swarm/logs/deploy_data`. 
+
+To adapt to your own cluster, please modify the following:
 
 * Add `--deploy` flag if the application is not already deployed.
 
@@ -109,7 +111,13 @@ GPU is required for deployment. The shortcut scripts for deployment are in `dock
 * `--user-name` to your own.
 
 ##### Diurnal load
-`test_deploy.sh` tests the  diurnal pattern where concurrent users start as 4, gradually rises to 36 and then gradually drops back to 4, with each period lasting 120s. The instructions are the same as static load.
+`test_deploy.sh` tests the  diurnal pattern where concurrent users start as 4, gradually rises to 36 and then gradually drops back to 4, with each period lasting 120s. The instructions are the same as static load. Execution logs are saved in `docker_swarm/logs/diurnal_deploy_data`.
 
 #### HotelReservation 
-`test_deploy_hotel.sh` tests the constant users and `test_deploy_diurnal_hotel.sh` tests diurnal pattern. The modification instructions are similar to SocialNetwork.
+`test_deploy_hotel.sh` tests the constant users and `test_deploy_diurnal_hotel.sh` tests diurnal pattern. The modification instructions are similar to SocialNetwork. Execution logs are saved in `docker_swarm/logs/hotel_deploy_data`.
+
+### Data processing
+
+For SocialNetwork, `python data_proc/count_cpus.py LOGDIR` calculates the average cpu usage, tail latencies & violation rates of the execution logs, and `python data_proc/plot.py LOGDIR` plots the real-time cpu allocation of each service and end-to-end latencies. `LOGDIR` should be the execution logs generated from deployment.
+
+For HotelReservation, `python data_proc/count_cpus_hotel.py LOGDIR` is similar to that of SocialNetwork.
