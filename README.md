@@ -34,14 +34,16 @@ For exmaple, in `docker_swarm/misc`, `python3 make_cluster_config.py --nodes ath
 For adapting to your own local cluster, please check the following:
 
 ##### SocialNetwork
+
 * modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L40-L47 to include the ips of your servers. You probably need to remove the DROP rule in INPUT & FORWARD from iptables for these servers to be connected, and make sure servers can be sshed from each other. For HotelReservation, please modify `docker_swarm/misc/make_hotel_cluster_config.py` to generate the cluster configuration.
 
 * modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L108-L121 to change the virtual cpu number and tags of the servers included in the cluster (the tags are used to control service placement. Please check the placement constraints in the benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml, for example in https://github.com/zyqCSL/sinan-local/blob/master/benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml#L17-L19. The compose file assumes two types of servers, tagged with 'data' and 'compute' correspondingly.) 
 
+##### HotelReservation
+
 * HotelReservation is a bit trickier since the Consul it uses have network issues when deployed with docker swarm, so the workaround we use is to deploy it with multiple docker-compose files, one per server. In this repo we assume two servers, and the docker-compose files are `benchmarks/hotelReservation/docker-compose-ath8.yml` and `benchmarks/hotelReservation/docker-compose-ath9.yml`, and `docker-compose-ath9.yml` should be executed before `docker-compose-ath8.yml`.  In terms of generating cluster configuration, please modify `docker_swarm/misc/make_hotel_cluster_config.py`. The instructions are similar to SocialNetwork, although the server tags won't have impacts.
 
-##### HotelReservation
-* For HotelRerservation, please also check https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/master_deploy_ath_hotel.py#L1308-L1323 & https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/master_data_collect_ath_hotel.py#L1119-L1131, in which please modify the ssh function to point to your own server ip. These two scripts are used for deployment and data collection correspondingly.
+* Please also check https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/master_deploy_ath_hotel.py#L1308-L1323 & https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/master_data_collect_ath_hotel.py#L1119-L1131, in which please modify the ssh function to point to your own server ip. These two scripts are used for deployment and data collection correspondingly.
 
 #### Inference engine configuration (`docker_swarm/misc/make_gpu_config.py`)
 In `docker_swarm/misc`, `python3 make_gpu_config.py --gpu-config gpu.json` generates the predictor configuration for SocialNetwork and saves it in `docker_swarm/config/gpu.json`. Similarly, `python3 make_gpu_hotel_config.py --gpu-config gpu_hotel.json` generates predictor configuration for hotel reservation. 
