@@ -35,7 +35,7 @@ For adapting to your own local cluster, please check the following:
 
 ##### SocialNetwork
 
-* modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L40-L47 to include the ips of your servers. You probably need to remove the DROP rule in INPUT & FORWARD from iptables for these servers to be connected, and make sure servers can be sshed from each other. For HotelReservation, please modify `docker_swarm/misc/make_hotel_cluster_config.py` to generate the cluster configuration.
+* modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L40-L47 to include the ips of your servers. You probably need to remove the DROP rule in INPUT & FORWARD from iptables for these servers to be connected, and make sure servers can be sshed from each other without password. For HotelReservation, please modify `docker_swarm/misc/make_hotel_cluster_config.py` to generate the cluster configuration.
 
 * modify https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/misc/make_cluster_config.py#L108-L121 to change the virtual cpu number and tags of the servers included in the cluster (the tags are used to control service placement. Please check the placement constraints in the benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml, for example in https://github.com/zyqCSL/sinan-local/blob/master/benchmarks/socialNetwork-ml-swarm/docker-compose-swarm.yml#L17-L19. The compose file assumes two types of servers, tagged with 'data' and 'compute' correspondingly.) 
 
