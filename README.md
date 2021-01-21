@@ -43,6 +43,8 @@ For adapting to your own local cluster, please check the following:
 
 * HotelReservation is a bit trickier since the Consul it uses has network issues when deployed with docker swarm, so the workaround we use is to deploy it with multiple docker-compose files, one per server. In this repo we assume two servers, and the docker-compose files are `benchmarks/hotelReservation/docker-compose-ath8.yml` and `benchmarks/hotelReservation/docker-compose-ath9.yml`, and `docker-compose-ath9.yml` should be executed before `docker-compose-ath8.yml`.  In terms of generating cluster configuration, please modify `docker_swarm/misc/make_hotel_cluster_config.py`. The instructions are similar to SocialNetwork, although the server tags won't have impacts.
 
+* Please also modify the `XXXIP` fields to ip of your own server in `benchmarks/hotelReservation/config.json` in (for example https://github.com/zyqCSL/sinan-local/blob/master/benchmarks/hotelReservation/config.json#L4).
+
 * Please also check https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/master_deploy_ath_hotel.py#L1308-L1323 & https://github.com/zyqCSL/sinan-local/blob/master/docker_swarm/master_data_collect_ath_hotel.py#L1119-L1131, in which please modify the ssh function to point to your own server ip. These two scripts are used for deployment and data collection correspondingly.
 
 #### Inference engine configuration (`docker_swarm/misc/make_gpu_config.py`)
